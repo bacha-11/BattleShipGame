@@ -22,7 +22,7 @@ var model = {
     boardSize: 7,
     numShips: 3,
     shipLength: 3,
-    shipSunk: 0,
+    shipsSunk: 0,
 
     ships: [
         { locations: ["06", "16", "26"], hits: ["", "", ""] },
@@ -32,12 +32,13 @@ var model = {
 
     
     fire: function(guess){
-        for(var i=0; i < this.boardSize; i++){
+        for(var i=0; i < this.numShips; i++){
             var ship = this.ships[i];
-            var locations = ship.locations;
-            let index = locations.indexOf(guess)
+            // var locations = ship.locations;
+            // var index = locations.indexOf(guess)
             // chaining the variables. We can also write the above two lines like this
-            // let index = ship.locations.indexOf(guess) --> this is called chaining
+            let index = ship.locations.indexOf(guess) //--> this is called chaining
+
             if (index >= 0){
                 ship.hits[index] = 'hit';
 
@@ -46,11 +47,12 @@ var model = {
 
                 if(this.isSunk(ship)){
                     view.displayMessage('You sunk my Battleship!');
-                    this.shipSunk++;
+                    this.shipsSunk++;
                 }
                 return true;
             }
         }
+
         view.displayMiss(guess);
         view.displayMessage("You missed!");
         return false;
@@ -67,7 +69,8 @@ var model = {
     }
 };
 
-model.fire('01')
-model.fire('06')
 
-model.fire('26')
+model.fire("53");
+model.fire("06");
+model.fire("16");
+model.fire("26");
