@@ -12,7 +12,6 @@ var view = {
     displayMiss: function(location){
         let cell = document.getElementById(location)
         cell.setAttribute('class', 'miss')
-
     }
 
 };
@@ -40,10 +39,18 @@ var model = {
             let index = ship.locations.indexOf(guess) //--> this is called chaining
 
             if (index >= 0){
-                ship.hits[index] = 'hit';
 
-                view.displayHit(guess);
-                view.displayMessage('HIT');
+                if (ship.hits[index] == ''){
+                    
+                    ship.hits[index] = 'hit';
+
+                    view.displayHit(guess);
+                    view.displayMessage('HIT');
+                }else{
+                    view.displayHit(guess);
+                    view.displayMessage('Already HIT');
+                }
+                
 
                 if(this.isSunk(ship)){
                     view.displayMessage('You sunk my Battleship!');
@@ -115,5 +122,38 @@ let controller = {
 };
 
 
+function init(){
+    let fireButton = document.getElementById('fireButton');
+    fireButton.onclick = handleFireButton;
 
+    var guessInput = document.getElementById("guessInput");
+    guessInput.onkeypress = handleKeyPress;
+}
+
+
+function handleFireButton(){
+    if ( model.shipsSunk == 3){
+        alert('You already sank all my battleships')
+    }else{
+        var guessInput = document.getElementById("guessInput");
+        var guess = guessInput.value;
+        controller.processGuess(guess)
+        guessInput.value = ""
+    }
+}
+
+
+function handleKeyPress(e) {
+    if ( model.shipsSunk == 3){
+        alert('You already sank all my battleships')
+    }else{
+        var fireButton = document.getElementById("fireButton");
+        if (e.keyCode === 13) {
+            fireButton.click();
+            return false;
+        }
+    }
+}
+
+window.onload = init;
 
